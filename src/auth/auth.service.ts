@@ -1,34 +1,35 @@
 import { Injectable } from '@nestjs/common';
-import { CustomerService } from '../customer/customer.service';
 import { compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { Customer } from '../customer/entities/customer.entity';
+import { Identity } from '../identity/entities/identity.entity';
+import { IdentityService } from '../identity/identity.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly customerService: CustomerService,
+    private readonly identityService: IdentityService,
     private readonly jwtService: JwtService,
   ) {
   }
 
-  async validateUser(phone: string, password: string) {
-    const customer = await this.customerService.findOne({ phone });
+  async validateUser(primaryID: string, password: string) {
+    const identity = await this.identityService.findOne({ primaryID });
 
-    if (customer && await compare(password, customer.passwordHash)) {
-      return customer;
+    if (identity && await compare(password, identity.passwordHash)) {
+      return identity;
     }
 
     return null;
   }
 
-  async login(customer: Customer) {
+  async login(identity: Identity) {
     return {
       token: this.jwtService.sign({
-        phone: customer.phone,
-        sub: customer.id,
+        primaryID: identity.primaryID,
+        role: identity.role,
+        sub: identity.id,
       }),
-      customer,
+      identity,
     };
   }
 }

@@ -3,16 +3,16 @@ import { AuthService } from './auth.service';
 import { AuthResolver } from './auth.resolver';
 import { LocalStrategy } from './local.strategy';
 import { PassportModule } from '@nestjs/passport';
-import { CustomerModule } from '../customer/customer.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppConfig } from '../config/configuration';
 import { JwtStrategy } from './jwt.strategy';
+import { IdentityModule } from '../identity/identity.module';
 
 @Module({
   imports: [
     PassportModule,
-    CustomerModule,
+    IdentityModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

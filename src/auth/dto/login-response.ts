@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Customer } from '../../customer/entities/customer.entity';
+import { Identity } from '../../identity/entities/identity.entity';
 
 @ObjectType()
 export class LoginResponse {
@@ -7,5 +7,5 @@ export class LoginResponse {
   token: string;
 
   @Field()
-  customer: Customer;
+  identity: Identity;
 }

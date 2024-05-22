@@ -21,13 +21,21 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Identity {
+  id: Int!
+  primaryID: String!
+  passwordHash: String!
+  role: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
 type Customer {
   id: Int!
   companyName: String
   firstName: String!
   lastName: String!
   email: String
-  phone: String!
   country: String!
   city: String!
   address: String!
@@ -40,7 +48,7 @@ type Customer {
 
 type LoginResponse {
   token: String!
-  customer: Customer!
+  identity: Identity!
 }
 
 type Query {
@@ -54,7 +62,7 @@ type Mutation {
   createCustomer(createCustomerInput: CreateCustomerInput!): Customer!
   updateCustomer(id: Int!, updateCustomerInput: UpdateCustomerInput!): Customer!
   removeCustomer(id: Int!): Customer
-  login(loginUserInput: LoginUserInput!): LoginResponse!
+  login(loginInput: LoginInput!): LoginResponse!
 }
 
 input CreateWarehouseInput {
@@ -97,7 +105,7 @@ input UpdateCustomerInput {
   status: String
 }
 
-input LoginUserInput {
-  phone: String!
+input LoginInput {
+  primaryID: String!
   password: String!
 }

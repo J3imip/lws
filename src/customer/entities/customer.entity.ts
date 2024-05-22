@@ -1,6 +1,15 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Expose } from 'class-transformer';
+import { Identity } from '../../identity/entities/identity.entity';
 
 export enum CustomerStatus {
   KYC_PENDING = 'kyc_pending',
@@ -35,10 +44,6 @@ export class Customer {
   @Field({ nullable: true })
   email: string;
 
-  @Column({ type: 'varchar', length: 16 })
-  @Field()
-  phone: string;
-
   @Column({ type: 'varchar', length: 2 })
   @Field()
   country: string;
@@ -55,10 +60,6 @@ export class Customer {
   @Field()
   postal: string;
 
-  @Expose({ name: 'password_hash' })
-  @Column({ type: 'varchar', length: 72, name: 'password_hash' })
-  passwordHash: string;
-
   @Column({ type: 'varchar', length: 255, nullable: true })
   @Field({ nullable: true })
   photo: string;
@@ -66,6 +67,10 @@ export class Customer {
   @Column({ type: 'enum', enum: ['kyc_pending', 'kyc_approved', 'kyc_rejected', 'banned'], default: 'kyc_pending' })
   @Field()
   status: CustomerStatus;
+
+  @OneToOne(() => Identity, (identity) => identity.id)
+  @JoinColumn({ name: 'identity' })
+  identity: Identity;
 
   @Expose({ name: 'created_at' })
   @CreateDateColumn({ type: 'timestamp with time zone', name: 'created_at' })

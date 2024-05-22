@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { hash } from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
 import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere';
+import { Identity } from '../identity/entities/identity.entity';
 
 @Injectable()
 export class CustomerService {
@@ -14,9 +15,19 @@ export class CustomerService {
   }
 
   async create(createCustomerInput: CreateCustomerInput) {
-    const customer = this.customerRepository.create(createCustomerInput);
+    const { phone, password, ...customerData } = createCustomerInput;
 
-    customer.passwordHash = await hash(createCustomerInput.password, 10);
+    const identity = new Identity({
+      primaryID: phone,
+      passwordHash: await hash(password, 10),
+    });
+
+    await this.customerRepository.manager.save(identity);
+
+    const customer = this.customerRepository.create({
+      ...customerData,
+      identity: identity,
+    });
 
     return this.customerRepository.save(customer);
   }

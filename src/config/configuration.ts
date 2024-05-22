@@ -13,4 +13,10 @@ export type AppConfig = {
     secret: string
     expiresIn: string
   }
+  init: {
+    admin: {
+      primaryID: string
+      password: string
+    }
+  }
 };

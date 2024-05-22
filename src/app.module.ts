@@ -8,6 +8,10 @@ import { ApolloDriver } from '@nestjs/apollo';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CustomerModule } from './customer/customer.module';
 import { AuthModule } from './auth/auth.module';
+import { IdentityService } from './identity/identity.service';
+import { IdentityModule } from './identity/identity.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './auth/roles.guard';
 
 @Module({
   imports: [
@@ -28,9 +32,16 @@ import { AuthModule } from './auth/auth.module';
     WarehouseModule,
     CustomerModule,
     AuthModule,
+    IdentityModule,
   ],
   controllers: [],
   providers: [],
 })
 export class AppModule {
+  constructor(private readonly identityService: IdentityService) {
+  }
+
+  async onModuleInit() {
+    await this.identityService.createMasterIdentity();
+  }
 }

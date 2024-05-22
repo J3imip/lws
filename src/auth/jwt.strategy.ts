@@ -3,6 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AppConfig } from '../config/configuration';
+import { Identity } from '../identity/entities/identity.entity';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -14,7 +15,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: any) {
-    return { userId: payload.sub, phone: payload.phone };
+  async validate(payload: any): Promise<Partial<Identity>> {
+    return {
+      id: payload.sub,
+      primaryID: payload.primaryID,
+      role: payload.role,
+    };
   }
 }
