@@ -1,4 +1,4 @@
-import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { WarehouseService } from './warehouse.service';
 import { Warehouse } from './entities/warehouse.entity';
 import { CreateWarehouseInput } from './dto/create-warehouse.input';
@@ -7,6 +7,7 @@ import { UseGuards } from '@nestjs/common';
 import { Roles } from '../auth/roles.decorator';
 import { IdentityRole } from '../identity/entities/identity.entity';
 import { RolesGuard } from '../auth/roles.guard';
+import { PaginationInput } from '../dto/pagination.input';
 
 @Resolver(() => Warehouse)
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -16,8 +17,8 @@ export class WarehouseResolver {
   }
 
   @Query(() => [Warehouse])
-  warehouses() {
-    return this.warehouseService.findAll();
+  warehouses(@Args('paginationInput', { nullable: true }) paginationInput: PaginationInput) {
+    return this.warehouseService.findAll(paginationInput);
   }
 
   @Mutation(() => Warehouse)

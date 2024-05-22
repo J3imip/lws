@@ -52,9 +52,15 @@ type LoginResponse {
 }
 
 type Query {
-  warehouses: [Warehouse!]!
+  warehouses(paginationInput: PaginationInput): [Warehouse!]!
   customerList: [Customer!]!
   customer(id: Int!): Customer!
+}
+
+input PaginationInput {
+  limit: Float
+  offset: Float
+  order: String
 }
 
 type Mutation {

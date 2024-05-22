@@ -3,6 +3,7 @@ import { Warehouse } from './entities/warehouse.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateWarehouseInput } from './dto/create-warehouse.input';
+import { PaginationInput } from '../dto/pagination.input';
 
 @Injectable()
 export class WarehouseService {
@@ -15,7 +16,13 @@ export class WarehouseService {
     );
   }
 
-  async findAll(): Promise<Warehouse[]> {
-    return this.warehouseRepository.find();
+  async findAll(paginationInput: PaginationInput): Promise<Warehouse[]> {
+    return this.warehouseRepository.find({
+      take: paginationInput.limit,
+      skip: paginationInput.offset,
+      order: {
+        id: paginationInput.order,
+      },
+    });
   }
 }
