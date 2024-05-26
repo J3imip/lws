@@ -9,15 +9,10 @@ db:
   synchronize: true
 
 jwt:
-  secret: ?&lt;ZUso[WqRqv-YzD|H@&lt;}rev[R+7*J^FhJDAqU^20JJ)=_+BLA+:vR]W&quot;5Y
-  expiresIn: 24h
-
-session:
-  secret: pLjz'JDPea&amp;V[.L8BSCVzzBHHGAde*uL7.eDG]JqfT|9NK.m}CAy9K%%T6/]c7j?W'&lt;KtU'
-  resave: false
-  saveUninitialized: false
-  cookie:
-    maxAge: 3600000
+  accessSecret:
+  refreshSecret:
+  accessExpiresIn: 60s
+  refreshExpiresIn: 7d
 
 init:
   admin:

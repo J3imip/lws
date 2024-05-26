@@ -8,10 +8,15 @@ import { hash } from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
 import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere';
 import { Identity } from '../identity/entities/identity.entity';
+import { PaginationInput } from '../dto/pagination.input';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class CustomerService {
-  constructor(@InjectRepository(Customer) private readonly customerRepository: Repository<Customer>) {
+  constructor(
+    @InjectRepository(Customer) private readonly customerRepository: Repository<Customer>,
+    private readonly authService: AuthService,
+  ) {
   }
 
   async create(createCustomerInput: CreateCustomerInput) {
@@ -29,14 +34,22 @@ export class CustomerService {
       identity: identity,
     });
 
-    return this.customerRepository.save(customer);
+    await this.customerRepository.save(customer);
+
+    return await this.authService.login(identity);
   }
 
-  findAll() {
-    return this.customerRepository.find();
+  async findAll(paginationInput: PaginationInput) {
+    return this.customerRepository.find({
+      take: paginationInput.limit,
+      skip: paginationInput.offset,
+      order: {
+        id: paginationInput.order,
+      },
+    });
   }
 
-  findOne(options: FindOptionsWhere<Customer>[] | FindOptionsWhere<Customer>) {
+  async findOne(options: FindOptionsWhere<Customer>[] | FindOptionsWhere<Customer>) {
     return this.customerRepository.findOne({ where: options });
   }
 

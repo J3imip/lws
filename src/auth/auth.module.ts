@@ -4,24 +4,18 @@ import { AuthResolver } from './auth.resolver';
 import { LocalStrategy } from './local.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AppConfig } from '../config/configuration';
-import { JwtStrategy } from './jwt.strategy';
+import { AccessTokenStrategy } from './access-token.strategy';
 import { IdentityModule } from '../identity/identity.module';
+import { RefreshTokenStrategy } from './refresh-token.strategy';
 
 @Module({
   imports: [
-    PassportModule,
+    PassportModule.register({ session: true }),
+    JwtModule.register({}),
     IdentityModule,
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<AppConfig['jwt']>('jwt').secret,
-        signOptions: { expiresIn: configService.get<AppConfig['jwt']>('jwt').expiresIn },
-      }),
-    })],
-  providers: [AuthService, AuthResolver, LocalStrategy, JwtStrategy],
+  ],
+  providers: [AuthService, AuthResolver, LocalStrategy, AccessTokenStrategy, RefreshTokenStrategy],
+  exports: [AuthService],
 })
 export class AuthModule {
 }

@@ -30,6 +30,24 @@ type Identity {
   updatedAt: DateTime!
 }
 
+type Order {
+  id: Int!
+  status: String!
+  payment: String!
+  price: Int!
+  currency: String!
+  deliveryPeriod: Interval!
+  actualDeliveryPeriod: Interval!
+  receiptDate: DateTime!
+  refundAmount: Int!
+  country: String!
+  city: String!
+  address: String!
+  customer: Customer!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
 type Customer {
   id: Int!
   companyName: String
@@ -47,14 +65,21 @@ type Customer {
 }
 
 type LoginResponse {
-  token: String!
+  accessToken: String!
+  refreshToken: String!
   identity: Identity!
 }
 
+"""Interval custom scalar type"""
+scalar Interval
+
 type Query {
   warehouses(paginationInput: PaginationInput): [Warehouse!]!
-  customerList: [Customer!]!
+  customerList(paginationInput: PaginationInput): [Customer!]!
   customer(id: Int!): Customer!
+  refreshToken: LoginResponse!
+  orders(paginationInput: PaginationInput): [Order!]!
+  order(id: Float!): Order!
 }
 
 input PaginationInput {
@@ -65,10 +90,12 @@ input PaginationInput {
 
 type Mutation {
   createWarehouse(createWarehouseInput: CreateWarehouseInput!): Warehouse!
-  createCustomer(createCustomerInput: CreateCustomerInput!): Customer!
+  createCustomer(createCustomerInput: CreateCustomerInput!): LoginResponse!
   updateCustomer(id: Int!, updateCustomerInput: UpdateCustomerInput!): Customer!
   removeCustomer(id: Int!): Customer
   login(loginInput: LoginInput!): LoginResponse!
+  placeOrder(createOrderInput: CreateOrderInput!): Order!
+  updateOrder(id: Float!, updateOrderInput: UpdateOrderInput!): Order!
 }
 
 input CreateWarehouseInput {
@@ -114,4 +141,24 @@ input UpdateCustomerInput {
 input LoginInput {
   primaryID: String!
   password: String!
+}
+
+input CreateOrderInput {
+  payment: String!
+  price: Float!
+  currency: String!
+  receiptDate: DateTime!
+  country: String!
+  city: String!
+  address: String!
+}
+
+input UpdateOrderInput {
+  payment: String
+  price: Float
+  currency: String
+  receiptDate: DateTime
+  country: String
+  city: String
+  address: String
 }

@@ -17,7 +17,13 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "typeorm": "ts-node --require tsconfig-paths/register ./node_modules/typeorm/cli",
+    "migration:run": " npm run typeorm migration:run -- -d ./src/config/typeorm.config.ts",
+    "migration:generate": "npm run typeorm -- -d ./src/config/typeorm.config.ts migration:generate ./migrations/%npm_config_name%",
+    "migration:create": "npm run typeorm -- migration:create ./migrations/$npm_config_name",
+    "migration:revert": "npm run typeorm -- -d ./src/config/typeorm.config.ts migration:revert",
+    "migration:show": "npm run typeorm -- migration:show -d ./db/typeorm.config.ts"
   },
   "dependencies": {
     "@apollo/server": "^4.10.4",
@@ -35,12 +41,13 @@
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
-    "express-session": "^1.18.0",
     "graphql": "^16.8.1",
+    "ioredis": "^5.4.1",
     "js-yaml": "^4.1.0",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "postgres": "^3.4.4",
+    "postgres-interval": "^4.0.2",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
     "typeorm": "^0.3.20"
@@ -58,6 +65,7 @@
     "@types/supertest": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",

@@ -4,8 +4,11 @@ import { Identity } from '../../identity/entities/identity.entity';
 @ObjectType()
 export class LoginResponse {
   @Field()
-  token: string;
+  accessToken: string;
 
   @Field()
-  identity: Identity;
+  refreshToken?: string;
+
+  @Field()
+  identity?: Identity;
 }

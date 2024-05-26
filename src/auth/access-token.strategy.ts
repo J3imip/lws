@@ -6,12 +6,12 @@ import { AppConfig } from '../config/configuration';
 import { Identity } from '../identity/entities/identity.entity';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly configService: ConfigService) {
+export class AccessTokenStrategy extends PassportStrategy(Strategy, 'jwt') {
+  constructor(configService: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: configService.get<AppConfig['jwt']>('jwt').secret,
+      secretOrKey: configService.get<AppConfig['jwt']>('jwt').accessSecret,
     });
   }
 

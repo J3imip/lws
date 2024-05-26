@@ -3,13 +3,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
+  JoinColumn, OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Expose } from 'class-transformer';
 import { Identity } from '../../identity/entities/identity.entity';
+import { Order } from '../../order/entities/order.entity';
 
 export enum CustomerStatus {
   KYC_PENDING = 'kyc_pending',
@@ -69,8 +70,11 @@ export class Customer {
   status: CustomerStatus;
 
   @OneToOne(() => Identity, (identity) => identity.id)
-  @JoinColumn({ name: 'identity' })
+  @JoinColumn({ name: 'identity_id' })
   identity: Identity;
+
+  @OneToMany(() => Order, (order) => order.customer)
+  orders: Order[];
 
   @Expose({ name: 'created_at' })
   @CreateDateColumn({ type: 'timestamp with time zone', name: 'created_at' })

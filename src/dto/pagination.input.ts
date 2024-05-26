@@ -9,7 +9,6 @@ export class PaginationInput {
   limit?: number;
 
   @Field({ nullable: true })
-  @IsPositive({ message: 'Offset must be a positive number' })
   @IsOptional()
   offset?: number;
 

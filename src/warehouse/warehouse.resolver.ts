@@ -2,7 +2,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { WarehouseService } from './warehouse.service';
 import { Warehouse } from './entities/warehouse.entity';
 import { CreateWarehouseInput } from './dto/create-warehouse.input';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { AccessTokenGuard } from '../auth/access-token.guard';
 import { UseGuards } from '@nestjs/common';
 import { Roles } from '../auth/roles.decorator';
 import { IdentityRole } from '../identity/entities/identity.entity';
@@ -10,7 +10,7 @@ import { RolesGuard } from '../auth/roles.guard';
 import { PaginationInput } from '../dto/pagination.input';
 
 @Resolver(() => Warehouse)
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(AccessTokenGuard, RolesGuard)
 @Roles(IdentityRole.ADMIN)
 export class WarehouseResolver {
   constructor(private readonly warehouseService: WarehouseService) {
