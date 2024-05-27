@@ -1,6 +1,15 @@
 import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
+export class WarehouseProductInput {
+  @Field()
+  productID: number;
+
+  @Field()
+  productQuantity: number;
+}
+
+@InputType()
 export class CreateWarehouseInput {
   @Field({ nullable: true })
   capacity?: number;
@@ -25,5 +34,8 @@ export class CreateWarehouseInput {
 
   @Field({ nullable: true })
   email?: string;
+
+  @Field(() => [WarehouseProductInput], { nullable: true })
+  products: WarehouseProductInput[];
 }
 

@@ -2,11 +2,15 @@ import { ObjectType, Field, Int } from '@nestjs/graphql';
 import {
   Column,
   CreateDateColumn,
-  Entity,
+  Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Expose } from 'class-transformer';
+import { Manufacturer } from '../../manufacturer/entities/manufacturer.entity';
+import { OrderProduct } from '../../order/entities/order-product.entity';
+import { Warehouse } from '../../warehouse/entities/warehouse.entity';
+import { WarehouseProduct } from '../../warehouse/entities/warehouse-product.entity';
 
 @Entity()
 @ObjectType()
@@ -39,6 +43,18 @@ export class Product {
   @Field()
   currency: string;
 
+  @ManyToOne(() => Manufacturer, (manufacturer) => manufacturer.products, { nullable: false })
+  @JoinColumn({ name: 'manufacturer' })
+  @Field(() => Manufacturer)
+  manufacturer: Manufacturer;
+
+  @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.product)
+  @Field(() => [OrderProduct], { nullable: true })
+  orderProducts: OrderProduct[];
+
+  @OneToMany(() => WarehouseProduct, (warehouseProduct) => warehouseProduct.product)
+  @Field(() => [WarehouseProduct], { nullable: true })
+  warehouseProducts: WarehouseProduct[];
 
   @Expose({ name: 'created_at' })
   @CreateDateColumn({ type: 'timestamp with time zone', name: 'created_at' })

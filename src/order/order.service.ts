@@ -8,6 +8,8 @@ import { UpdateOrderInput } from './dto/update-order.input';
 import { plainToInstance } from 'class-transformer';
 import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere';
 import { PaginationInput } from '../dto/pagination.input';
+import { OrderProduct } from './entities/order-product.entity';
+import { Product } from '../product/entities/product.entity';
 
 @Injectable()
 export class OrderService {
@@ -23,11 +25,24 @@ export class OrderService {
       throw new NotFoundException('Customer not found');
     }
 
-    const order = this.orderRepository.create({
-      ...createOrderInput,
-      customer,
+    const order = this.orderRepository.create({ customer, ...createOrderInput });
+
+    const orderProducts = createOrderInput.products.map((orderProductInput) => {
+      return new OrderProduct({
+        order,
+        product: {
+          id: orderProductInput.productID,
+        } as Product,
+        productQuantity: orderProductInput.productQuantity,
+      });
     });
-    return await this.orderRepository.save(order);
+
+    order.orderProducts = orderProducts;
+
+    const res = await this.orderRepository.save(order);
+    await this.orderRepository.manager.save(orderProducts);
+
+    return res
   }
 
   async update(id: number, updateOrderInput: UpdateOrderInput) {
@@ -42,29 +57,21 @@ export class OrderService {
   }
 
   async findAll(paginationInput: PaginationInput, options: FindOptionsWhere<Order>[] | FindOptionsWhere<Order> = null) {
-    // return this.orderRepository.find({
-    //   take: paginationInput.limit,
-    //   skip: paginationInput.offset,
-    //   order: {
-    //     id: paginationInput.order,
-    //   },
-    //   where: options,
-    // });
-    return this.orderRepository
-      .createQueryBuilder()
-      .where(options)
-      .take(paginationInput.limit)
-      .skip(paginationInput.offset)
-      .orderBy('Order.id', paginationInput.order)
-      .leftJoinAndSelect('Order.customer', 'customer')
-      .getMany();
+    return this.orderRepository.find({
+      relations: ['customer'],
+      take: paginationInput.limit,
+      skip: paginationInput.offset,
+      order: {
+        id: paginationInput.order,
+      },
+      where: options,
+    });
   }
 
   async findOne(options: FindOptionsWhere<Order>[] | FindOptionsWhere<Order>) {
-    return await this.orderRepository
-      .createQueryBuilder()
-      .where(options)
-      .leftJoinAndSelect('Order.customer', 'customer')
-      .getOne();
+    return await this.orderRepository.findOne({
+      relations: ['customer'],
+      where: options,
+    });
   }
 }

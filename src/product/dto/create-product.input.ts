@@ -1,10 +1,19 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { PaymentMethod } from '../entities/product.entity';
+
 
 @InputType()
 export class CreateProductInput {
   @Field()
-  payment: PaymentMethod;
+  name: string;
+
+  @Field({ nullable: true })
+  description: string;
+
+  @Field({ nullable: true })
+  category: string;
+
+  @Field()
+  volume: number;
 
   @Field()
   price: number;
@@ -13,14 +22,5 @@ export class CreateProductInput {
   currency: string;
 
   @Field()
-  receiptDate: Date;
-
-  @Field()
-  country: string;
-
-  @Field()
-  city: string;
-
-  @Field()
-  address: string;
+  manufacturerId: number;
 }

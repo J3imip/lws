@@ -2,16 +2,19 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Warehouse {
+type Manufacturer {
   id: Int!
-  capacity: Float
+  name: String!
+  firstName: String!
+  lastName: String!
   country: String
   city: String
   address: String
-  firstName: String!
-  lastName: String!
-  phone: String!
+  logo: String
+  phone: String
   email: String
+  category: String
+  products: [Product!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -26,24 +29,6 @@ type Identity {
   primaryID: String!
   passwordHash: String!
   role: String!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-}
-
-type Order {
-  id: Int!
-  status: String!
-  payment: String!
-  price: Int!
-  currency: String!
-  deliveryPeriod: Interval!
-  actualDeliveryPeriod: Interval!
-  receiptDate: DateTime!
-  refundAmount: Int!
-  country: String!
-  city: String!
-  address: String!
-  customer: Customer!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -64,6 +49,67 @@ type Customer {
   updatedAt: DateTime!
 }
 
+type Order {
+  id: Int!
+  status: String!
+  payment: String!
+  price: Int!
+  currency: String!
+  deliveryPeriod: Interval!
+  actualDeliveryPeriod: Interval!
+  receiptDate: DateTime!
+  refundAmount: Int!
+  country: String!
+  city: String!
+  address: String!
+  customer: Customer!
+  orderProducts: [OrderProduct!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type OrderProduct {
+  order: Order!
+  product: Product!
+  productQuantity: Int!
+}
+
+type Product {
+  id: Int!
+  name: String!
+  description: String
+  category: String
+  volume: Float!
+  price: Float!
+  currency: String!
+  manufacturer: Manufacturer!
+  orderProducts: [OrderProduct!]
+  warehouseProducts: [WarehouseProduct!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type WarehouseProduct {
+  warehouse: Warehouse!
+  product: Product!
+  productQuantity: Int!
+}
+
+type Warehouse {
+  id: Int!
+  capacity: Float
+  country: String
+  city: String
+  address: String
+  firstName: String!
+  lastName: String!
+  phone: String!
+  email: String
+  warehouseProducts: [WarehouseProduct!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
 type LoginResponse {
   accessToken: String!
   refreshToken: String!
@@ -80,6 +126,8 @@ type Query {
   refreshToken: LoginResponse!
   orders(paginationInput: PaginationInput): [Order!]!
   order(id: Float!): Order!
+  manufacturers(paginationInput: PaginationInput): [Manufacturer!]!
+  manufacturer(id: Float!): Manufacturer!
 }
 
 input PaginationInput {
@@ -96,6 +144,12 @@ type Mutation {
   login(loginInput: LoginInput!): LoginResponse!
   placeOrder(createOrderInput: CreateOrderInput!): Order!
   updateOrder(id: Float!, updateOrderInput: UpdateOrderInput!): Order!
+  createProduct(createProductInput: CreateProductInput!): Product!
+  updateProduct(id: Float!, createProductInput: CreateProductInput!): Product!
+  deleteProduct(id: Float!): Product!
+  createManufacturer(createManufacturerInput: CreateManufacturerInput!): Manufacturer!
+  updateManufacturer(id: String!, createManufacturerInput: CreateManufacturerInput!): Manufacturer!
+  deleteManufacturer(id: String!): Manufacturer!
 }
 
 input CreateWarehouseInput {
@@ -107,6 +161,12 @@ input CreateWarehouseInput {
   lastName: String!
   phone: String!
   email: String
+  products: [WarehouseProductInput!]
+}
+
+input WarehouseProductInput {
+  productID: Float!
+  productQuantity: Float!
 }
 
 input CreateCustomerInput {
@@ -151,6 +211,12 @@ input CreateOrderInput {
   country: String!
   city: String!
   address: String!
+  products: [OrderProductInput!]!
+}
+
+input OrderProductInput {
+  productID: Float!
+  productQuantity: Float!
 }
 
 input UpdateOrderInput {
@@ -161,4 +227,28 @@ input UpdateOrderInput {
   country: String
   city: String
   address: String
+  products: [OrderProductInput!]
+}
+
+input CreateProductInput {
+  name: String!
+  description: String
+  category: String
+  volume: Float!
+  price: Float!
+  currency: String!
+  manufacturerId: Float!
+}
+
+input CreateManufacturerInput {
+  name: String!
+  firstName: String!
+  lastName: String!
+  country: String
+  city: String
+  address: String
+  logo: String
+  phone: String
+  email: String
+  category: String
 }

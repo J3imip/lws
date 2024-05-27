@@ -4,7 +4,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn, ManyToOne,
+  JoinColumn, ManyToOne, OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -12,6 +12,7 @@ import { Expose } from 'class-transformer';
 import { Customer } from '../../customer/entities/customer.entity';
 import { IPostgresInterval } from 'postgres-interval';
 import { IntervalScalar } from '../../dto/interval.scalar';
+import { OrderProduct } from './order-product.entity';
 
 export enum OrderStatus {
   PENDING = 'pending',
@@ -93,6 +94,10 @@ export class Order {
   @JoinColumn({ name: 'customer_id' })
   @Field(() => Customer)
   customer: Customer;
+
+  @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.order)
+  @Field(() => [OrderProduct], { nullable: true })
+  orderProducts: OrderProduct[];
 
   @Expose({ name: 'created_at' })
   @CreateDateColumn({ type: 'timestamp with time zone', name: 'created_at' })

@@ -1,5 +1,7 @@
 import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Expose } from 'class-transformer';
+import { WarehouseProduct } from './warehouse-product.entity';
 
 @Entity()
 @ObjectType()
@@ -24,10 +26,12 @@ export class Warehouse {
   @Field({ nullable: true })
   address?: string;
 
+  @Expose({ name: 'postal_code' })
   @Column({ type: 'varchar', length: 255, name: 'first_name' })
   @Field()
   firstName: string;
 
+  @Expose({ name: 'last_name' })
   @Column({ type: 'varchar', length: 255, name: 'last_name' })
   @Field()
   lastName: string;
@@ -40,16 +44,17 @@ export class Warehouse {
   @Field({ nullable: true })
   email?: string;
 
-  @Column({ type: 'timestamp with time zone', default: () => 'CURRENT_TIMESTAMP', name: 'created_at' })
+  @OneToMany(() => WarehouseProduct, (warehouseProduct) => warehouseProduct.warehouse)
+  @Field(() => [WarehouseProduct], { nullable: true })
+  warehouseProducts: WarehouseProduct[];
+
+  @Expose({ name: 'created_at' })
+  @CreateDateColumn({ type: 'timestamp with time zone', name: 'created_at' })
   @Field()
   createdAt: Date;
 
-  @Column({
-    type: 'timestamp with time zone',
-    default: () => 'CURRENT_TIMESTAMP',
-    name: 'updated_at',
-    onUpdate: 'CURRENT_TIMESTAMP',
-  })
+  @Expose({ name: 'updated_at' })
+  @UpdateDateColumn({ type: 'timestamp with time zone', name: 'updated_at' })
   @Field()
   updatedAt: Date;
 }

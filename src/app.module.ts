@@ -10,10 +10,9 @@ import { CustomerModule } from './customer/customer.module';
 import { AuthModule } from './auth/auth.module';
 import { IdentityService } from './identity/identity.service';
 import { IdentityModule } from './identity/identity.module';
-import { OrderService } from './order/order.service';
 import { OrderModule } from './order/order.module';
-import { ProductService } from './product/product.service';
 import { ProductModule } from './product/product.module';
+import { ManufacturerModule } from './manufacturer/manufacturer.module';
 
 @Module({
   imports: [
@@ -37,6 +36,7 @@ import { ProductModule } from './product/product.module';
     IdentityModule,
     OrderModule,
     ProductModule,
+    ManufacturerModule,
   ],
   controllers: [],
   providers: [],
