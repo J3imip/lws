@@ -203,7 +203,6 @@ input LoginInput {
 
 input CreateOrderInput {
   payment: String!
-  price: Float!
   receiptDate: DateTime!
   country: String!
   city: String!
@@ -218,12 +217,13 @@ input OrderProductInput {
 
 input UpdateOrderInput {
   payment: String
-  price: Float
   receiptDate: DateTime
   country: String
   city: String
   address: String
   products: [OrderProductInput!]
+  price: Float
+  status: String
 }
 
 input CreateProductInput {

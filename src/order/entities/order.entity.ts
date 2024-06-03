@@ -18,12 +18,10 @@ export enum OrderStatus {
   PENDING = 'pending',
   PROCESSING = 'processing',
   PAID = 'paid',
-  SHIPPED = 'shipped',
 
   // finite states
   REJECTED = 'rejected',
   DELIVERED = 'delivered',
-  REFUNDED = 'refunded',
 }
 
 export enum PaymentMethod {
