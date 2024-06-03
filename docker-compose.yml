@@ -1,0 +1,32 @@
+version: '3.5'
+
+services:
+  lws-db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=lws
+      - POSTGRES_PASSWORD=lws
+      - POSTGRES_DB=lws
+      - PGDATA=/pgdata
+    volumes:
+      - lws-data:/pgdata
+    ports:
+      - '5432:5432'
+
+  lws-svc:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - PORT=3000
+      - KV_FILE=/config.yaml
+    ports:
+      - '3000:3000'
+    depends_on:
+      - lws-db
+    volumes:
+      - ./config/config.yaml:/config.yaml
+
+volumes:
+  lws-data:

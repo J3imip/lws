@@ -52,13 +52,10 @@ export class Order {
   @Check(`price > 0`)
   price: number;
 
-  @Column({ type: 'varchar', length: 6, nullable: false })
-  @Field()
-  currency: string;
-
   @Expose({ name: 'delivery_period' })
   @Column({ type: 'interval', nullable: true, name: 'delivery_period' })
   @Field(() => IntervalScalar)
+  @Check(`delivery_period > interval '0 days'`)
   deliveryPeriod: IPostgresInterval;
 
   @Expose({ name: 'actual_delivery_period' })
@@ -71,12 +68,6 @@ export class Order {
   @Column({ type: 'timestamp with time zone', nullable: false, name: 'receipt_date' })
   @Field()
   receiptDate: Date;
-
-  @Expose({ name: 'refund_amount' })
-  @Column({ type: 'bigint', nullable: true, name: 'refund_amount' })
-  @Field(() => Int)
-  @Check(`refund_amount >= 0`)
-  refundAmount: number;
 
   @Column({ type: 'varchar', length: 2, nullable: false })
   @Field()

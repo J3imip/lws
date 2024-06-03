@@ -19,9 +19,6 @@ export class CreateOrderInput {
   price: number;
 
   @Field()
-  currency: string;
-
-  @Field()
   receiptDate: Date;
 
   @Field()

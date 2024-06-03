@@ -11,9 +11,6 @@ export class UpdateOrderInput extends PartialType(CreateOrderInput) {
   price?: number;
 
   @Field({ nullable: true })
-  currency?: string;
-
-  @Field({ nullable: true })
   receiptDate?: Date;
 
   @Field({ nullable: true })

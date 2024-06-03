@@ -19,8 +19,5 @@ export class CreateProductInput {
   price: number;
 
   @Field()
-  currency: string;
-
-  @Field()
   manufacturerId: number;
 }

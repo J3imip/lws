@@ -17,7 +17,9 @@ export class CustomerResolver {
   }
 
   @Mutation(() => LoginResponse)
-  async createCustomer(@Args('createCustomerInput') createCustomerInput: CreateCustomerInput) {
+  async createCustomer(
+    @Args('createCustomerInput') createCustomerInput: CreateCustomerInput,
+  ) {
     return await this.customerService.create(createCustomerInput);
   }
 

@@ -54,11 +54,9 @@ type Order {
   status: String!
   payment: String!
   price: Int!
-  currency: String!
   deliveryPeriod: Interval!
   actualDeliveryPeriod: Interval!
   receiptDate: DateTime!
-  refundAmount: Int!
   country: String!
   city: String!
   address: String!
@@ -81,7 +79,6 @@ type Product {
   category: String
   volume: Float!
   price: Float!
-  currency: String!
   manufacturer: Manufacturer!
   orderProducts: [OrderProduct!]
   warehouseProducts: [WarehouseProduct!]
@@ -126,6 +123,7 @@ type Query {
   refreshToken: LoginResponse!
   orders(paginationInput: PaginationInput): [Order!]!
   order(id: Float!): Order!
+  products(paginationInput: PaginationInput): [Product!]!
   manufacturers(paginationInput: PaginationInput): [Manufacturer!]!
   manufacturer(id: Float!): Manufacturer!
 }
@@ -206,7 +204,6 @@ input LoginInput {
 input CreateOrderInput {
   payment: String!
   price: Float!
-  currency: String!
   receiptDate: DateTime!
   country: String!
   city: String!
@@ -222,7 +219,6 @@ input OrderProductInput {
 input UpdateOrderInput {
   payment: String
   price: Float
-  currency: String
   receiptDate: DateTime
   country: String
   city: String
@@ -236,7 +232,6 @@ input CreateProductInput {
   category: String
   volume: Float!
   price: Float!
-  currency: String!
   manufacturerId: Float!
 }
 

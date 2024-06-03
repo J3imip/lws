@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateWarehouseInput } from './dto/create-warehouse.input';
 import { PaginationInput } from '../dto/pagination.input';
 import { WarehouseProduct } from './entities/warehouse-product.entity';
+import { Product } from '../product/entities/product.entity';
 
 @Injectable()
 export class WarehouseService {
@@ -19,7 +20,7 @@ export class WarehouseService {
         warehouse,
         product: {
           id: warehouseProductInput.productID,
-        },
+        } as Product,
         productQuantity: warehouseProductInput.productQuantity,
       });
     });

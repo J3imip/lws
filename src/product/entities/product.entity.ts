@@ -1,15 +1,15 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import {
+  Check,
   Column,
   CreateDateColumn,
-  Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany,
+  Entity, JoinColumn, ManyToOne, OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Expose } from 'class-transformer';
 import { Manufacturer } from '../../manufacturer/entities/manufacturer.entity';
 import { OrderProduct } from '../../order/entities/order-product.entity';
-import { Warehouse } from '../../warehouse/entities/warehouse.entity';
 import { WarehouseProduct } from '../../warehouse/entities/warehouse-product.entity';
 
 @Entity()
@@ -33,15 +33,13 @@ export class Product {
 
   @Column({ type: 'numeric' })
   @Field()
+  @Check(`"volume" >= 0`)
   volume: number;
 
   @Column({ type: 'bigint' })
   @Field()
+  @Check(`"price" >= 0`)
   price: number;
-
-  @Column({ type: 'varchar', length: 3 })
-  @Field()
-  currency: string;
 
   @ManyToOne(() => Manufacturer, (manufacturer) => manufacturer.products, { nullable: false })
   @JoinColumn({ name: 'manufacturer' })

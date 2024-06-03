@@ -3,6 +3,7 @@ import { Product } from './entities/product.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateProductInput } from './dto/create-product.input';
+import { PaginationInput } from '../dto/pagination.input';
 
 @Injectable()
 export class ProductService {
@@ -16,7 +17,7 @@ export class ProductService {
       ...createProductInput,
       manufacturer: {
         id: createProductInput.manufacturerId,
-      }
+      },
     });
   }
 
@@ -26,5 +27,15 @@ export class ProductService {
 
   async delete(id: number) {
     return await this.productRepository.delete(id);
+  }
+
+  async findAll(paginationInput: PaginationInput) {
+    return await this.productRepository.find({
+      skip: paginationInput.offset,
+      take: paginationInput.limit,
+      order: {
+        id: paginationInput.order,
+      },
+    });
   }
 }

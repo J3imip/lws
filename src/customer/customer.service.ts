@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateCustomerInput } from './dto/create-customer.input';
 import { UpdateCustomerInput } from './dto/update-customer.input';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,17 +10,25 @@ import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere';
 import { Identity } from '../identity/entities/identity.entity';
 import { PaginationInput } from '../dto/pagination.input';
 import { AuthService } from '../auth/auth.service';
+import { IdentityService } from '../identity/identity.service';
 
 @Injectable()
 export class CustomerService {
   constructor(
     @InjectRepository(Customer) private readonly customerRepository: Repository<Customer>,
     private readonly authService: AuthService,
+    private readonly identityService: IdentityService,
   ) {
   }
 
   async create(createCustomerInput: CreateCustomerInput) {
     const { phone, password, ...customerData } = createCustomerInput;
+
+    const isIdentityExist = await this.identityService.findOne({ primaryID: phone })
+
+    if (isIdentityExist) {
+      throw new ConflictException('Phone number already exists');
+    }
 
     const identity = new Identity({
       primaryID: phone,
