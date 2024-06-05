@@ -56,17 +56,22 @@ export class OrderService {
     return plainToInstance(Order, result.raw[0]);
   }
 
-  async findAll(paginationInput: PaginationInput, options: FindOptionsWhere<Order>[] | FindOptionsWhere<Order> = null) {
+  async findAll(paginationInput: PaginationInput = null, options: FindOptionsWhere<Order>[] | FindOptionsWhere<Order> = null) {
+    const limit = paginationInput?.limit ?? 10; // Значение по умолчанию - 10
+    const offset = paginationInput?.offset ?? 0; // Значение по умолчанию - 0
+    const order = paginationInput?.order ?? 'ASC'; // Значение по умолчанию - ASC
+
     return this.orderRepository.find({
       relations: ['customer', 'orderProducts', 'orderProducts.product'],
-      take: paginationInput.limit,
-      skip: paginationInput.offset,
+      take: limit,
+      skip: offset,
       order: {
-        id: paginationInput.order,
+        id: order,
       },
       where: options,
     });
   }
+
 
   async findOne(options: FindOptionsWhere<Order>[] | FindOptionsWhere<Order>) {
     return await this.orderRepository.findOne({

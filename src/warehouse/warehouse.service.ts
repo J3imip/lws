@@ -15,20 +15,23 @@ export class WarehouseService {
   async create(createWarehouseInput: CreateWarehouseInput): Promise<Warehouse> {
     const warehouse = this.warehouseRepository.create(createWarehouseInput);
 
-    const warehouseProducts = createWarehouseInput.products.map((warehouseProductInput) => {
-      return new WarehouseProduct({
-        warehouse,
-        product: {
-          id: warehouseProductInput.productID,
-        } as Product,
-        productQuantity: warehouseProductInput.productQuantity,
+    if (createWarehouseInput.products) {
+      const warehouseProducts = createWarehouseInput.products.map((warehouseProductInput) => {
+        return new WarehouseProduct({
+          warehouse,
+          product: {
+            id: warehouseProductInput.productID,
+          } as Product,
+          productQuantity: warehouseProductInput.productQuantity,
+        });
       });
-    });
 
-    warehouse.warehouseProducts = warehouseProducts;
+      warehouse.warehouseProducts = warehouseProducts;
+
+      await this.warehouseRepository.manager.save(warehouseProducts);
+    }
 
     const res = await this.warehouseRepository.save(warehouse);
-    await this.warehouseRepository.manager.save(warehouseProducts);
 
     return res;
   }
