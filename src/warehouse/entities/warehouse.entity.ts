@@ -1,8 +1,9 @@
 import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, Index, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { Expose } from 'class-transformer';
 import { WarehouseProduct } from './warehouse-product.entity';
 
+@Index(['country', 'city', 'address'], { unique: true })
 @Entity()
 @ObjectType()
 export class Warehouse {
@@ -15,16 +16,16 @@ export class Warehouse {
   capacity?: number;
 
   @Column({ type: 'varchar', length: 2 })
-  @Field({ nullable: true })
-  country?: string;
+  @Field()
+  country: string;
 
   @Column({ type: 'varchar', length: 255 })
-  @Field({ nullable: true })
-  city?: string;
+  @Field()
+  city: string;
 
-  @Column({ type: 'text', nullable: true })
-  @Field({ nullable: true })
-  address?: string;
+  @Column({ type: 'text' })
+  @Field()
+  address: string;
 
   @Expose({ name: 'postal_code' })
   @Column({ type: 'varchar', length: 255, name: 'first_name' })

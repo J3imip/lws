@@ -14,14 +14,14 @@ export class CreateWarehouseInput {
   @Field({ nullable: true })
   capacity?: number;
 
-  @Field({ nullable: true })
-  country?: string;
+  @Field()
+  country: string;
 
-  @Field({ nullable: true })
-  city?: string;
+  @Field()
+  city: string;
 
-  @Field({ nullable: true })
-  address?: string;
+  @Field()
+  address: string;
 
   @Field()
   firstName: string;

@@ -95,9 +95,9 @@ type WarehouseProduct {
 type Warehouse {
   id: Int
   capacity: Float
-  country: String
-  city: String
-  address: String
+  country: String!
+  city: String!
+  address: String!
   firstName: String!
   lastName: String!
   phone: String!
@@ -158,9 +158,9 @@ type Mutation {
 
 input CreateWarehouseInput {
   capacity: Float
-  country: String
-  city: String
-  address: String
+  country: String!
+  city: String!
+  address: String!
   firstName: String!
   lastName: String!
   phone: String!

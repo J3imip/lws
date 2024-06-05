@@ -15,6 +15,8 @@ export class WarehouseService {
   async create(createWarehouseInput: CreateWarehouseInput): Promise<Warehouse> {
     const warehouse = this.warehouseRepository.create(createWarehouseInput);
 
+    const res = await this.warehouseRepository.save(warehouse);
+
     if (createWarehouseInput.products) {
       const warehouseProducts = createWarehouseInput.products.map((warehouseProductInput) => {
         return new WarehouseProduct({
@@ -28,10 +30,9 @@ export class WarehouseService {
 
       warehouse.warehouseProducts = warehouseProducts;
 
+
       await this.warehouseRepository.manager.save(warehouseProducts);
     }
-
-    const res = await this.warehouseRepository.save(warehouse);
 
     return res;
   }
