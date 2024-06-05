@@ -45,7 +45,7 @@ export class Order {
   @Field()
   payment: PaymentMethod;
 
-  @Column({ type: 'bigint', nullable: false })
+  @Column({ type: 'bigint', nullable: true })
   @Field(() => Int)
   @Check(`price > 0`)
   price: number;

@@ -23,6 +23,6 @@ export class AuthResolver {
   @Query(() => LoginResponse)
   @UseGuards(RefreshTokenGuard)
   async refreshToken(@Context() context): Promise<LoginResponse> {
-    return this.authService.refreshToken(context.req);
+    return this.authService.refreshToken(context.req.user);
   }
 }
