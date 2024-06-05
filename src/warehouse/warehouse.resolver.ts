@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { WarehouseService } from './warehouse.service';
 import { Warehouse } from './entities/warehouse.entity';
 import { CreateWarehouseInput } from './dto/create-warehouse.input';
@@ -27,7 +27,7 @@ export class WarehouseResolver {
   }
 
   @Mutation(() => Warehouse)
-  deleteWarehouse(@Args('id') id: number) {
+  deleteWarehouse(@Args('id', {type: () => Int}) id: number) {
     return this.warehouseService.delete(id);
   }
 

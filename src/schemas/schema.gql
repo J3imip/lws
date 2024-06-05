@@ -140,7 +140,7 @@ input ProductFilter {
 
 type Mutation {
   createWarehouse(createWarehouseInput: CreateWarehouseInput!): Warehouse!
-  deleteWarehouse(id: Float!): Warehouse!
+  deleteWarehouse(id: Int!): Warehouse!
   createCustomer(createCustomerInput: CreateCustomerInput!): LoginResponse!
   updateCustomer(id: Int!, updateCustomerInput: UpdateCustomerInput!): Customer!
   removeCustomer(id: Int!): Customer
