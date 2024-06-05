@@ -93,7 +93,7 @@ type WarehouseProduct {
 }
 
 type Warehouse {
-  id: Int!
+  id: Int
   capacity: Float
   country: String
   city: String
@@ -140,6 +140,7 @@ input ProductFilter {
 
 type Mutation {
   createWarehouse(createWarehouseInput: CreateWarehouseInput!): Warehouse!
+  deleteWarehouse(id: Float!): Warehouse!
   createCustomer(createCustomerInput: CreateCustomerInput!): LoginResponse!
   updateCustomer(id: Int!, updateCustomerInput: UpdateCustomerInput!): Customer!
   removeCustomer(id: Int!): Customer

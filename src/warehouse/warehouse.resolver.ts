@@ -26,6 +26,11 @@ export class WarehouseResolver {
     return this.warehouseService.create(createWarehouseInput);
   }
 
+  @Mutation(() => Warehouse)
+  deleteWarehouse(@Args('id') id: number) {
+    return this.warehouseService.delete(id);
+  }
+
   // @Mutation(() => Warehouse)
   // updateWarehouse(
   //   @Args('id') id: number,

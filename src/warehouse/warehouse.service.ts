@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Warehouse } from './entities/warehouse.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -46,7 +46,17 @@ export class WarehouseService {
       },
     });
   }
-  //
+
+  async delete(id: number) {
+    const warehouse = await this.warehouseRepository.findOne({ where: { id }, relations: ['warehouseProducts'] });
+
+    if (!warehouse) {
+      throw new NotFoundException(`Warehouse with ID ${id} not found`);
+    }
+
+    return await this.warehouseRepository.remove(warehouse);
+  }
+
   // async update(id: number, updateWarehouseInput: UpdateWarehouseInput): Promise<Warehouse> {
   //   const warehouse = await this.warehouseRepository.findOne({ where: { id }, relations: ['warehouseProducts'] });
   //

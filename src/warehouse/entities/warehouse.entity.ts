@@ -7,7 +7,7 @@ import { WarehouseProduct } from './warehouse-product.entity';
 @ObjectType()
 export class Warehouse {
   @PrimaryGeneratedColumn({ type: 'bigint' })
-  @Field(() => Int)
+  @Field(() => Int, {nullable: true})
   id: number;
 
   @Column({ type: 'numeric', nullable: true })
