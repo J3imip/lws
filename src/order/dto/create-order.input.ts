@@ -1,12 +1,12 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, Int } from '@nestjs/graphql';
 import { PaymentMethod } from '../entities/order.entity';
 
 @InputType()
 export class OrderProductInput {
-  @Field()
+  @Field(() => Int)
   productID: number;
 
-  @Field()
+  @Field(() => Int)
   productQuantity: number;
 }
 

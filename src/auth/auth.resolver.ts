@@ -3,8 +3,8 @@ import { AuthService } from './auth.service';
 import { LoginResponse } from './dto/login-response';
 import { LoginInput } from './dto/login.input';
 import { UseGuards } from '@nestjs/common';
-import { GqlAuthGuard } from './gql-auth.guard';
 import { RefreshTokenGuard } from './refresh-token.guard';
+import { IdentityRole } from '../identity/entities/identity.entity';
 
 @Resolver()
 export class AuthResolver {
@@ -12,12 +12,25 @@ export class AuthResolver {
   }
 
   @Mutation(() => LoginResponse)
-  @UseGuards(GqlAuthGuard)
-  async login(
-    @Args('loginInput') _loginInput: LoginInput,
-    @Context() context,
+  async userLogin(
+    @Args('loginInput') loginInput: LoginInput,
   ): Promise<LoginResponse> {
-    return this.authService.login(context.user);
+    const identity = await this.authService.validateUser(loginInput.primaryID, loginInput.password);
+    if (!identity || identity.role !== IdentityRole.CUSTOMER) {
+      throw new Error('Invalid credentials or unauthorized access');
+    }
+    return this.authService.login(identity);
+  }
+
+  @Mutation(() => LoginResponse)
+  async adminLogin(
+    @Args('loginInput') loginInput: LoginInput,
+  ): Promise<LoginResponse> {
+    const identity = await this.authService.validateUser(loginInput.primaryID, loginInput.password);
+    if (!identity || identity.role !== IdentityRole.ADMIN) {
+      throw new Error('Invalid credentials or unauthorized access');
+    }
+    return this.authService.login(identity);
   }
 
   @Query(() => LoginResponse)

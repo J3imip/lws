@@ -1,4 +1,4 @@
-import { Field, InputType, PartialType } from '@nestjs/graphql';
+import { Field, InputType, Int, PartialType } from '@nestjs/graphql';
 import { CreateOrderInput } from './create-order.input';
 import { OrderStatus, PaymentMethod } from '../entities/order.entity';
 
@@ -7,7 +7,7 @@ export class UpdateOrderInput extends PartialType(CreateOrderInput) {
   @Field({ nullable: true })
   payment?: PaymentMethod;
 
-  @Field({ nullable: true })
+  @Field(() => Int, { nullable: true })
   price?: number;
 
   @Field({ nullable: true })

@@ -1,4 +1,4 @@
-import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { OrderService } from './order.service';
 import { Order } from './entities/order.entity';
 import { CreateOrderInput } from './dto/create-order.input';
@@ -33,7 +33,7 @@ export class OrderResolver {
   @Mutation(() => Order)
   @Roles(IdentityRole.ADMIN)
   async updateOrder(
-    @Args('id') id: number,
+    @Args('id', { type: () => Int }) id: number,
     @Args('updateOrderInput') updateOrderInput: UpdateOrderInput,
   ) {
     return await this.orderService.update(id, updateOrderInput);
@@ -63,7 +63,7 @@ export class OrderResolver {
   @Query(() => Order)
   @Roles(IdentityRole.CUSTOMER, IdentityRole.ADMIN)
   async order(
-    @Args('id') id: number,
+    @Args('id', { type: () => Int }) id: number,
     @Context() context,
   ) {
     const order = await this.orderService.findOne({ id });
@@ -74,7 +74,7 @@ export class OrderResolver {
     const customer = await this.customerService.findOne({ identity: { id: context.req.user.id } });
 
     if (context.req.user.role === IdentityRole.CUSTOMER && customer.id !== order.customer.id) {
-      throw new ForbiddenException("You can't view other customer's orders");
+      throw new ForbiddenException('You can\'t view other customer\'s orders');
     }
 
     return order;

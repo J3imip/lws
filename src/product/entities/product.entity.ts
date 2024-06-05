@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { ObjectType, Field, Int, Float } from '@nestjs/graphql';
 import {
   Check,
   Column,
@@ -32,12 +32,12 @@ export class Product {
   category: string;
 
   @Column({ type: 'numeric' })
-  @Field()
+  @Field(() => Float)
   @Check(`"volume" >= 0`)
   volume: number;
 
   @Column({ type: 'bigint' })
-  @Field()
+  @Field(() => Int)
   @Check(`"price" >= 0`)
   price: number;
 

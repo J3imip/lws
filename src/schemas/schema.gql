@@ -78,7 +78,7 @@ type Product {
   description: String
   category: String
   volume: Float!
-  price: Float!
+  price: Int!
   manufacturer: Manufacturer!
   orderProducts: [OrderProduct!]
   warehouseProducts: [WarehouseProduct!]
@@ -122,15 +122,15 @@ type Query {
   customer(id: Int!): Customer!
   refreshToken: LoginResponse!
   orders(paginationInput: PaginationInput): [Order!]!
-  order(id: Float!): Order!
+  order(id: Int!): Order!
   products(paginationInput: PaginationInput, productFilter: ProductFilter): [Product!]!
   manufacturers(paginationInput: PaginationInput): [Manufacturer!]!
-  manufacturer(id: Float!): Manufacturer!
+  manufacturer(id: Int!): Manufacturer!
 }
 
 input PaginationInput {
-  limit: Float
-  offset: Float
+  limit: Int
+  offset: Int
   order: String
 }
 
@@ -143,15 +143,16 @@ type Mutation {
   createCustomer(createCustomerInput: CreateCustomerInput!): LoginResponse!
   updateCustomer(id: Int!, updateCustomerInput: UpdateCustomerInput!): Customer!
   removeCustomer(id: Int!): Customer
-  login(loginInput: LoginInput!): LoginResponse!
+  userLogin(loginInput: LoginInput!): LoginResponse!
+  adminLogin(loginInput: LoginInput!): LoginResponse!
   placeOrder(createOrderInput: CreateOrderInput!): Order!
-  updateOrder(id: Float!, updateOrderInput: UpdateOrderInput!): Order!
+  updateOrder(id: Int!, updateOrderInput: UpdateOrderInput!): Order!
   createProduct(createProductInput: CreateProductInput!): Product!
-  updateProduct(id: Float!, createProductInput: CreateProductInput!): Product!
-  deleteProduct(id: Float!): Product!
+  updateProduct(id: Int!, createProductInput: CreateProductInput!): Product!
+  deleteProduct(id: Int!): Product!
   createManufacturer(createManufacturerInput: CreateManufacturerInput!): Manufacturer!
   updateManufacturer(id: String!, createManufacturerInput: CreateManufacturerInput!): Manufacturer!
-  deleteManufacturer(id: Float!): Manufacturer!
+  deleteManufacturer(id: Int!): Manufacturer!
 }
 
 input CreateWarehouseInput {
@@ -167,8 +168,8 @@ input CreateWarehouseInput {
 }
 
 input WarehouseProductInput {
-  productID: Float!
-  productQuantity: Float!
+  productID: Int!
+  productQuantity: Int!
 }
 
 input CreateCustomerInput {
@@ -215,8 +216,8 @@ input CreateOrderInput {
 }
 
 input OrderProductInput {
-  productID: Float!
-  productQuantity: Float!
+  productID: Int!
+  productQuantity: Int!
 }
 
 input UpdateOrderInput {
@@ -226,7 +227,7 @@ input UpdateOrderInput {
   city: String
   address: String
   products: [OrderProductInput!]
-  price: Float
+  price: Int
   status: String
 }
 
@@ -235,8 +236,8 @@ input CreateProductInput {
   description: String
   category: String
   volume: Float!
-  price: Float!
-  manufacturerId: Float!
+  price: Int!
+  manufacturerId: Int!
 }
 
 input CreateManufacturerInput {

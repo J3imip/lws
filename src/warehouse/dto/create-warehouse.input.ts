@@ -1,11 +1,11 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, Int } from '@nestjs/graphql';
 
 @InputType()
 export class WarehouseProductInput {
-  @Field()
+  @Field(() => Int)
   productID: number;
 
-  @Field()
+  @Field(() => Int)
   productQuantity: number;
 }
 

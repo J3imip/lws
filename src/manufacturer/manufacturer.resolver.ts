@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { ManufacturerService } from './manufacturer.service';
 import { Manufacturer } from './entities/manufacturer.entity';
 import { CreateManufacturerInput } from './dto/create-manufacturer.input';
@@ -37,7 +37,7 @@ export class ManufacturerResolver {
   @Mutation(() => Manufacturer)
   @Roles(IdentityRole.ADMIN)
   async deleteManufacturer(
-    @Args('id') id: number,
+    @Args('id', { type: () => Int }) id: number,
   ) {
     return await this.manufacturerService.delete(id);
   }
@@ -51,7 +51,7 @@ export class ManufacturerResolver {
 
   @Query(() => Manufacturer)
   async manufacturer(
-    @Args('id') id: number,
+    @Args('id', { type: () => Int }) id: number,
   ) {
     return await this.manufacturerService.findOne(id);
   }

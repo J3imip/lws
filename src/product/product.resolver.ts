@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { RolesGuard } from '../auth/roles.guard';
 import { AccessTokenGuard } from '../auth/access-token.guard';
 import { UseGuards } from '@nestjs/common';
@@ -22,7 +22,7 @@ export class ProductResolver {
   @Roles(IdentityRole.ADMIN, IdentityRole.CUSTOMER)
   async products(
     @Args('paginationInput', { nullable: true }) paginationInput: PaginationInput,
-    @Args('productFilter', {nullable: true}) productFilter: ProductFilter
+    @Args('productFilter', { nullable: true }) productFilter: ProductFilter,
   ) {
     return await this.productService.findAll(paginationInput, productFilter);
   }
@@ -38,7 +38,7 @@ export class ProductResolver {
   @Mutation(() => Product)
   @Roles(IdentityRole.ADMIN)
   async updateProduct(
-    @Args('id') id: number,
+    @Args('id', { type: () => Int }) id: number,
     @Args('createProductInput') createProductInput: CreateProductInput,
   ) {
     return await this.productService.update(id, createProductInput);
@@ -46,7 +46,7 @@ export class ProductResolver {
 
   @Mutation(() => Product)
   async deleteProduct(
-    @Args('id') id: number,
+    @Args('id', { type: () => Int }) id: number,
   ) {
     return await this.productService.delete(id);
   }
