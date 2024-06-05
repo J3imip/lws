@@ -41,7 +41,7 @@ export class Product {
   @Check(`"price" >= 0`)
   price: number;
 
-  @ManyToOne(() => Manufacturer, (manufacturer) => manufacturer.products, { nullable: false })
+  @ManyToOne(() => Manufacturer, (manufacturer) => manufacturer.products, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'manufacturer' })
   @Field(() => Manufacturer)
   manufacturer: Manufacturer;

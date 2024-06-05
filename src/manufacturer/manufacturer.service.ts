@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Manufacturer } from './entities/manufacturer.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -20,7 +20,12 @@ export class ManufacturerService {
     return await this.manufacturerRepository.update(id, createManufacturerInput);
   }
 
-  async delete(id: string) {
+  async delete(id: number) {
+    const manufacturer = await this.manufacturerRepository.findOneBy({id});
+    if (!manufacturer) {
+      throw new NotFoundException("Manufacturer to delete not found");
+    }
+
     return await this.manufacturerRepository.delete(id);
   }
 

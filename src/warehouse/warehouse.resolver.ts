@@ -23,6 +23,14 @@ export class WarehouseResolver {
 
   @Mutation(() => Warehouse)
   createWarehouse(@Args('createWarehouseInput') createWarehouseInput: CreateWarehouseInput) {
-    return this.warehouseService.createWarehouse(createWarehouseInput);
+    return this.warehouseService.create(createWarehouseInput);
   }
+
+  // @Mutation(() => Warehouse)
+  // updateWarehouse(
+  //   @Args('id') id: number,
+  //   @Args('updateWarehouseInput') updateWarehouseInput: UpdateWarehouseInput
+  // ) {
+  //   return this.warehouseService.update(id, updateWarehouseInput);
+  // }
 }

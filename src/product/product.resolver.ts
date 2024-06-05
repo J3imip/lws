@@ -8,6 +8,7 @@ import { CreateProductInput } from './dto/create-product.input';
 import { ProductService } from './product.service';
 import { Product } from './entities/product.entity';
 import { PaginationInput } from '../dto/pagination.input';
+import { ProductFilter } from './dto/product.filter';
 
 @Resolver()
 @UseGuards(AccessTokenGuard, RolesGuard)
@@ -21,8 +22,9 @@ export class ProductResolver {
   @Roles(IdentityRole.ADMIN, IdentityRole.CUSTOMER)
   async products(
     @Args('paginationInput', { nullable: true }) paginationInput: PaginationInput,
+    @Args('productFilter', {nullable: true}) productFilter: ProductFilter
   ) {
-    return await this.productService.findAll(paginationInput);
+    return await this.productService.findAll(paginationInput, productFilter);
   }
 
   @Mutation(() => Product)

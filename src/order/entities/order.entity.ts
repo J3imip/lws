@@ -46,21 +46,21 @@ export class Order {
   payment: PaymentMethod;
 
   @Column({ type: 'bigint', nullable: true })
-  @Field(() => Int)
+  @Field(() => Int, {nullable: true})
   @Check(`price > 0`)
-  price: number;
+  price?: number;
 
   @Expose({ name: 'delivery_period' })
   @Column({ type: 'interval', nullable: true, name: 'delivery_period' })
-  @Field(() => IntervalScalar)
+  @Field(() => IntervalScalar, {nullable: true})
   @Check(`delivery_period > interval '0 days'`)
-  deliveryPeriod: IPostgresInterval;
+  deliveryPeriod?: IPostgresInterval;
 
   @Expose({ name: 'actual_delivery_period' })
   @Column({ type: 'interval', nullable: true, name: 'actual_delivery_period' })
-  @Field(() => IntervalScalar)
+  @Field(() => IntervalScalar, {nullable: true})
   @Check(`actual_delivery_period > interval '0 days'`)
-  actualDeliveryPeriod: IPostgresInterval;
+  actualDeliveryPeriod?: IPostgresInterval;
 
   @Expose({ name: 'receipt_date' })
   @Column({ type: 'timestamp with time zone', nullable: false, name: 'receipt_date' })
@@ -85,8 +85,8 @@ export class Order {
   customer: Customer;
 
   @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.order)
-  @Field(() => [OrderProduct], { nullable: true })
-  orderProducts: OrderProduct[];
+  @Field(() => [OrderProduct], {nullable: true})
+  orderProducts?: OrderProduct[];
 
   @Expose({ name: 'created_at' })
   @CreateDateColumn({ type: 'timestamp with time zone', name: 'created_at' })

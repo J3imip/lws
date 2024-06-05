@@ -6,9 +6,9 @@ export class LoginResponse {
   @Field()
   accessToken: string;
 
-  @Field()
+  @Field({ nullable: true })
   refreshToken?: string;
 
-  @Field()
+  @Field({ nullable: true})
   identity?: Identity;
 }

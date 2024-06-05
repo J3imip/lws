@@ -13,10 +13,10 @@ import { Product } from '../../product/entities/product.entity';
 @ObjectType()
 export class Manufacturer {
   @PrimaryGeneratedColumn({ type: 'bigint' })
-  @Field(() => Int)
+  @Field(() => Int, {nullable: true})
   id: number;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, unique: true })
   @Field()
   name: string;
 
@@ -32,35 +32,35 @@ export class Manufacturer {
 
   @Column({ type: 'varchar', length: 2, nullable: true })
   @Field({ nullable: true })
-  country: string;
+  country?: string;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   @Field({ nullable: true })
-  city: string;
+  city?: string;
 
   @Column({ type: 'text', nullable: true })
   @Field({ nullable: true })
-  address: string;
+  address?: string;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   @Field({ nullable: true })
-  logo: string;
+  logo?: string;
 
   @Column({ type: 'varchar', length: 16, nullable: true })
   @Field({ nullable: true })
-  phone: string;
+  phone?: string;
 
   @Column({ type: 'varchar', length: 320, nullable: true })
   @Field({ nullable: true })
-  email: string;
+  email?: string;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   @Field({ nullable: true })
-  category: string;
+  category?: string;
 
-  @OneToMany(() => Product, (product) => product.manufacturer)
+  @OneToMany(() => Product, (product) => product.manufacturer, {onDelete: 'CASCADE'})
   @Field(() => [Product], { nullable: true })
-  products: Product[];
+  products?: Product[];
 
   @Expose({ name: 'created_at' })
   @CreateDateColumn({ type: 'timestamp with time zone', name: 'created_at' })

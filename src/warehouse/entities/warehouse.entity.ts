@@ -45,7 +45,7 @@ export class Warehouse {
   email?: string;
 
   @OneToMany(() => WarehouseProduct, (warehouseProduct) => warehouseProduct.warehouse)
-  @Field(() => [WarehouseProduct], { nullable: true })
+  @Field(() => [WarehouseProduct])
   warehouseProducts: WarehouseProduct[];
 
   @Expose({ name: 'created_at' })

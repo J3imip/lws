@@ -12,7 +12,7 @@ export class WarehouseService {
   constructor(@InjectRepository(Warehouse) private readonly warehouseRepository: Repository<Warehouse>) {
   }
 
-  async createWarehouse(createWarehouseInput: CreateWarehouseInput): Promise<Warehouse> {
+  async create(createWarehouseInput: CreateWarehouseInput): Promise<Warehouse> {
     const warehouse = this.warehouseRepository.create(createWarehouseInput);
 
     const warehouseProducts = createWarehouseInput.products.map((warehouseProductInput) => {
@@ -43,4 +43,43 @@ export class WarehouseService {
       },
     });
   }
+  //
+  // async update(id: number, updateWarehouseInput: UpdateWarehouseInput): Promise<Warehouse> {
+  //   const warehouse = await this.warehouseRepository.findOne({ where: { id }, relations: ['warehouseProducts'] });
+  //
+  //   if (!warehouse) {
+  //     throw new NotFoundException(`Warehouse with ID ${id} not found`);
+  //   }
+  //
+  //   return await this.warehouseRepository.manager.transaction(async (manager) => {
+  //     // Update warehouse properties
+  //     Object.assign(warehouse, updateWarehouseInput);
+  //
+  //     if (updateWarehouseInput.products) {
+  //       // Remove existing warehouseProducts
+  //       await manager.delete(WarehouseProduct, { warehouse: { id: warehouse.id } });
+  //
+  //       // Create new warehouseProducts
+  //       const warehouseProducts = updateWarehouseInput.products.map((warehouseProductInput) => {
+  //         const product = new Product();
+  //         product.id = warehouseProductInput.productID;
+  //
+  //         let warehouseProduct = {} as WarehouseProduct;
+  //         warehouseProduct.warehouse = warehouse;
+  //         warehouseProduct.product = product;
+  //         warehouseProduct.productQuantity = warehouseProductInput.productQuantity;
+  //
+  //         return warehouseProduct;
+  //       });
+  //
+  //       warehouse.warehouseProducts = warehouseProducts;
+  //
+  //       // Save new warehouseProducts
+  //       await manager.save(WarehouseProduct, warehouseProducts);
+  //     }
+  //
+  //     // Save updated warehouse
+  //     return manager.save(Warehouse, warehouse);
+  //   });
+  // }
 }

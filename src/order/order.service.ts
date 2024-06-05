@@ -58,7 +58,7 @@ export class OrderService {
 
   async findAll(paginationInput: PaginationInput, options: FindOptionsWhere<Order>[] | FindOptionsWhere<Order> = null) {
     return this.orderRepository.find({
-      relations: ['customer'],
+      relations: ['customer', 'orderProducts', 'orderProducts.product'],
       take: paginationInput.limit,
       skip: paginationInput.offset,
       order: {

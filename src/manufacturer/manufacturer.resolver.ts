@@ -37,7 +37,7 @@ export class ManufacturerResolver {
   @Mutation(() => Manufacturer)
   @Roles(IdentityRole.ADMIN)
   async deleteManufacturer(
-    @Args('id') id: string,
+    @Args('id') id: number,
   ) {
     return await this.manufacturerService.delete(id);
   }

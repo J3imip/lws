@@ -3,7 +3,7 @@
 # ------------------------------------------------------
 
 type Manufacturer {
-  id: Int!
+  id: Int
   name: String!
   firstName: String!
   lastName: String!
@@ -53,9 +53,9 @@ type Order {
   id: Int!
   status: String!
   payment: String!
-  price: Int!
-  deliveryPeriod: Interval!
-  actualDeliveryPeriod: Interval!
+  price: Int
+  deliveryPeriod: Interval
+  actualDeliveryPeriod: Interval
   receiptDate: DateTime!
   country: String!
   city: String!
@@ -102,15 +102,15 @@ type Warehouse {
   lastName: String!
   phone: String!
   email: String
-  warehouseProducts: [WarehouseProduct!]
+  warehouseProducts: [WarehouseProduct!]!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
 
 type LoginResponse {
   accessToken: String!
-  refreshToken: String!
-  identity: Identity!
+  refreshToken: String
+  identity: Identity
 }
 
 """Interval custom scalar type"""
@@ -123,7 +123,7 @@ type Query {
   refreshToken: LoginResponse!
   orders(paginationInput: PaginationInput): [Order!]!
   order(id: Float!): Order!
-  products(paginationInput: PaginationInput): [Product!]!
+  products(paginationInput: PaginationInput, productFilter: ProductFilter): [Product!]!
   manufacturers(paginationInput: PaginationInput): [Manufacturer!]!
   manufacturer(id: Float!): Manufacturer!
 }
@@ -132,6 +132,10 @@ input PaginationInput {
   limit: Float
   offset: Float
   order: String
+}
+
+input ProductFilter {
+  onlyStored: Boolean
 }
 
 type Mutation {
@@ -147,7 +151,7 @@ type Mutation {
   deleteProduct(id: Float!): Product!
   createManufacturer(createManufacturerInput: CreateManufacturerInput!): Manufacturer!
   updateManufacturer(id: String!, createManufacturerInput: CreateManufacturerInput!): Manufacturer!
-  deleteManufacturer(id: String!): Manufacturer!
+  deleteManufacturer(id: Float!): Manufacturer!
 }
 
 input CreateWarehouseInput {

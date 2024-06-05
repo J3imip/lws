@@ -29,7 +29,7 @@ export class Customer {
   @Expose({ name: 'company_name' })
   @Column({ type: 'varchar', length: 255, name: 'company_name', nullable: true })
   @Field({ nullable: true })
-  companyName: string;
+  companyName?: string;
 
   @Expose({ name: 'first_name' })
   @Column({ type: 'varchar', length: 255, name: 'first_name' })
@@ -43,7 +43,7 @@ export class Customer {
 
   @Column({ type: 'varchar', length: 320, nullable: true })
   @Field({ nullable: true })
-  email: string;
+  email?: string;
 
   @Column({ type: 'varchar', length: 2 })
   @Field()
@@ -63,7 +63,7 @@ export class Customer {
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   @Field({ nullable: true })
-  photo: string;
+  photo?: string;
 
   @Column({ type: 'enum', enum: ['kyc_pending', 'kyc_approved', 'kyc_rejected', 'banned'], default: 'kyc_pending' })
   @Field()
