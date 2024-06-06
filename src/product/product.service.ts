@@ -45,7 +45,7 @@ export class ProductService {
     }
 
     return await this.productRepository.find({
-      relations: ['warehouseProducts'],
+      relations: ['warehouseProducts', 'manufacturer'],
       skip: paginationInput.offset,
       take: paginationInput.limit,
       order: {
