@@ -28,6 +28,10 @@ export class ProductService {
   }
 
   async delete(id: number) {
+    if (!await this.productRepository.findOneBy({id})) {
+      throw new Error(`Product with ID ${id} not found`);
+    }
+
     return await this.productRepository.delete(id);
   }
 

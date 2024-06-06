@@ -16,7 +16,7 @@ import { WarehouseProduct } from '../../warehouse/entities/warehouse-product.ent
 @ObjectType()
 export class Product {
   @PrimaryGeneratedColumn({ type: 'bigint' })
-  @Field(() => Int)
+  @Field(() => Int, { nullable: true })
   id: number;
 
   @Column({ type: 'varchar', length: 255 })
@@ -43,7 +43,7 @@ export class Product {
 
   @ManyToOne(() => Manufacturer, (manufacturer) => manufacturer.products, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'manufacturer' })
-  @Field(() => Manufacturer)
+  @Field(() => Manufacturer, { nullable: true })
   manufacturer: Manufacturer;
 
   @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.product)

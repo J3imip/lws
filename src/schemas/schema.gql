@@ -73,13 +73,13 @@ type OrderProduct {
 }
 
 type Product {
-  id: Int!
+  id: Int
   name: String!
   description: String
   category: String
   volume: Float!
   price: Int!
-  manufacturer: Manufacturer!
+  manufacturer: Manufacturer
   orderProducts: [OrderProduct!]
   warehouseProducts: [WarehouseProduct!]
   createdAt: DateTime!
