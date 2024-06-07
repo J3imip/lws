@@ -11,7 +11,10 @@ export class IntervalScalar implements CustomScalar<string, IPostgresInterval> {
   }
 
   serialize(value: IPostgresInterval): string {
-    return this.intervalToString(value); // value sent to the client
+    if (!value.days ) {
+      return '0 days';
+    }
+    return `${value.days} days`
   }
 
   parseLiteral(ast: ValueNode): IPostgresInterval {
@@ -19,12 +22,6 @@ export class IntervalScalar implements CustomScalar<string, IPostgresInterval> {
       return this.stringToInterval(ast.value);
     }
     return null;
-  }
-
-  private intervalToString(interval: IPostgresInterval): string {
-    // Convert IPostgresInterval to string representation
-    const { days, hours, minutes, seconds, milliseconds } = interval;
-    return `${days} days ${hours} hours ${minutes} minutes ${seconds}.${milliseconds} seconds`;
   }
 
   private stringToInterval(value: string): IPostgresInterval {

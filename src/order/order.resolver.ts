@@ -31,7 +31,7 @@ export class OrderResolver {
   }
 
   @Mutation(() => Order)
-  @Roles(IdentityRole.ADMIN)
+  @Roles(IdentityRole.ADMIN, IdentityRole.CUSTOMER)
   async updateOrder(
     @Args('id', { type: () => Int }) id: number,
     @Args('updateOrderInput') updateOrderInput: UpdateOrderInput,
